@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
       },
       to: [
         {
-          email: 'admissions@sipssiliguri.in',
+          email: 'sips.siliguricampus@gmail.com',
           name: 'SIPS Admissions Team',
         },
       ],
