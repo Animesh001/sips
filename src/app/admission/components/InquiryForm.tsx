@@ -5,6 +5,8 @@ import Icon from '@/components/ui/AppIcon';
 
 export default function InquiryForm() {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [form, setForm] = useState({
     name: '',
     phone: '',
@@ -18,10 +20,26 @@ export default function InquiryForm() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Backend connection point: submit form data to admissions API
-    setSubmitted(true);
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetch('/api/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Submission failed. Please try again.');
+      }
+      setSubmitted(true);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -208,10 +226,14 @@ export default function InquiryForm() {
                   />
                 </div>
 
-                <button type="submit" className="btn-primary w-full justify-center py-4 text-sm">
-                  Submit Inquiry
-                  <Icon name="PaperAirplaneIcon" size={16} />
+                <button type="submit" className="btn-primary w-full justify-center py-4 text-sm" disabled={loading}>
+                  {loading ? 'Submitting...' : 'Submit Inquiry'}
+                  {!loading && <Icon name="PaperAirplaneIcon" size={16} />}
                 </button>
+
+                {error && (
+                  <p className="text-center text-sm text-red-500">{error}</p>
+                )}
 
                 <p className="text-center text-xs text-muted-foreground">
                   By submitting, you agree to be contacted by the SIPS admissions team.

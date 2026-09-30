@@ -52,6 +52,30 @@ const faculty = [
   specialization: 'Pharmaceutical Lab Techniques',
   img: "https://img.rocket.new/generatedImages/rocket_gen_img_1d979e73c-1768920485884.png",
   alt: 'Professional male lab instructor in white coat against clean laboratory background'
+},
+{
+  name: 'Sourave Saha',
+  title: 'Faculty',
+  qualification: 'M.Pharm',
+  specialization: 'Pharmaceutical Sciences',
+  img: "/assets/images/Sourav_Saha-1790761764910.jpeg",
+  alt: 'Sourave Saha, M.Pharm faculty member at SIPS'
+},
+{
+  name: 'Sneha Roy',
+  title: 'Faculty',
+  qualification: 'M.Pharm',
+  specialization: 'Pharmaceutical Sciences',
+  img: "/assets/images/Sneha_Roy-1790761764981.jpeg",
+  alt: 'Sneha Roy, M.Pharm faculty member at SIPS'
+},
+{
+  name: 'Debdatta Sarkar',
+  title: 'Faculty',
+  qualification: 'M.Pharm',
+  specialization: 'Pharmaceutical Sciences',
+  img: "/assets/images/Debdatta_Sarkar-1790761764976.jpeg",
+  alt: 'Debdatta Sarkar, M.Pharm faculty member at SIPS'
 }];
 
 
