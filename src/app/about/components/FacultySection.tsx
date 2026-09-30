@@ -58,24 +58,24 @@ const faculty = [
   title: 'Faculty',
   qualification: 'M.Pharm',
   specialization: 'Pharmaceutical Sciences',
-  img: "/assets/images/faculty_sourave_saha.png",
-  alt: 'Professional illustrated portrait of Sourave Saha, pharmacy faculty member in formal academic attire'
+  img: "/assets/images/Sourav_Saha-1790761764910.jpeg",
+  alt: 'Sourave Saha, M.Pharm faculty member at SIPS'
 },
 {
   name: 'Sneha Roy',
   title: 'Faculty',
   qualification: 'M.Pharm',
   specialization: 'Pharmaceutical Sciences',
-  img: "/assets/images/faculty_sneha_roy.png",
-  alt: 'Professional illustrated portrait of Sneha Roy, pharmacy faculty member in formal academic attire'
+  img: "/assets/images/Sneha_Roy-1790761764981.jpeg",
+  alt: 'Sneha Roy, M.Pharm faculty member at SIPS'
 },
 {
   name: 'Debdatta Sarkar',
   title: 'Faculty',
   qualification: 'M.Pharm',
   specialization: 'Pharmaceutical Sciences',
-  img: "/assets/images/faculty_debdatta_sarkar.png",
-  alt: 'Professional illustrated portrait of Debdatta Sarkar, pharmacy faculty member in formal academic attire'
+  img: "/assets/images/Debdatta_Sarkar-1790761764976.jpeg",
+  alt: 'Debdatta Sarkar, M.Pharm faculty member at SIPS'
 }];
 
 
