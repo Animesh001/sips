@@ -58,7 +58,7 @@ const faculty = [
   title: 'Faculty',
   qualification: 'M.Pharm',
   specialization: 'Pharmaceutical Sciences',
-  img: "/assets/images/Sourav_Saha-1790761764910.jpeg",
+  img: "/assets/images/Sourav_Saha-1790765897286.jpeg",
   alt: 'Sourave Saha, M.Pharm faculty member at SIPS'
 },
 {
@@ -66,7 +66,7 @@ const faculty = [
   title: 'Faculty',
   qualification: 'M.Pharm',
   specialization: 'Pharmaceutical Sciences',
-  img: "/assets/images/Sneha_Roy-1790761764981.jpeg",
+  img: "/assets/images/Sneha_Roy-1790765897446.jpeg",
   alt: 'Sneha Roy, M.Pharm faculty member at SIPS'
 },
 {
@@ -74,7 +74,7 @@ const faculty = [
   title: 'Faculty',
   qualification: 'M.Pharm',
   specialization: 'Pharmaceutical Sciences',
-  img: "/assets/images/Debdatta_Sarkar-1790761764976.jpeg",
+  img: "/assets/images/Debdatta_Sarkar-1790765897460.jpeg",
   alt: 'Debdatta Sarkar, M.Pharm faculty member at SIPS'
 }];
 
