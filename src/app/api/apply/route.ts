@@ -73,8 +73,8 @@ export async function POST(req: NextRequest) {
     `;
 
     await transporter.sendMail({
-      from: '"SIPS Admissions Portal" <sips.siliguricampus@gmail.com>',
-      to: 'sips.siliguricampus@gmail.com',
+      from: `"SIPS Admissions Portal" <${smtpUser}>`,
+      to: smtpUser,
       replyTo: email ? `"${name}" <${email}>` : undefined,
       subject: `New Admission Inquiry from ${name} — SIPS`,
       html: htmlContent,
@@ -95,6 +95,16 @@ export async function POST(req: NextRequest) {
         {
           error:
             'Email authentication failed. Please verify BREVO_SMTP_USER and BREVO_SMTP_PASS in environment variables. The SMTP password must be an SMTP Key from Brevo Settings → SMTP & API, not your account password.',
+        },
+        { status: 500 }
+      );
+    }
+
+    if (err?.responseCode === 550 || err?.response?.includes('sender')) {
+      return NextResponse.json(
+        {
+          error:
+            'Sender address not verified. Please add and verify the sender email in Brevo (Settings → Senders & IP).',
         },
         { status: 500 }
       );
