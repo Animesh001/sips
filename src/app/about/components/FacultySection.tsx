@@ -58,7 +58,7 @@ const faculty = [
   title: 'Faculty',
   qualification: 'M.Pharm',
   specialization: 'Pharmaceutical Sciences',
-  img: "/assets/images/Sourav_Saha-1790765897286.jpeg",
+  img: "/assets/images/Sourav_Saha-1791040999084.jpeg",
   alt: 'Sourave Saha, M.Pharm faculty member at SIPS'
 },
 {
@@ -66,7 +66,7 @@ const faculty = [
   title: 'Faculty',
   qualification: 'M.Pharm',
   specialization: 'Pharmaceutical Sciences',
-  img: "/assets/images/Sneha_Roy-1790765897446.jpeg",
+  img: "/assets/images/Sneha_Roy-1791040999284.jpeg",
   alt: 'Sneha Roy, M.Pharm faculty member at SIPS'
 },
 {
@@ -74,8 +74,24 @@ const faculty = [
   title: 'Faculty',
   qualification: 'M.Pharm',
   specialization: 'Pharmaceutical Sciences',
-  img: "/assets/images/Debdatta_Sarkar-1790765897460.jpeg",
+  img: "/assets/images/Debdatta_Sarkar-1791040999308.jpeg",
   alt: 'Debdatta Sarkar, M.Pharm faculty member at SIPS'
+},
+{
+  name: 'Sourabh Palliwal',
+  title: 'Faculty',
+  qualification: 'M.Pharm',
+  specialization: 'Pharmaceutical Sciences',
+  img: "/assets/images/faculty_sourabh_palliwal.png",
+  alt: 'Sourabh Palliwal, M.Pharm faculty member at SIPS'
+},
+{
+  name: 'Bhakti Pradhan Mali',
+  title: 'Faculty',
+  qualification: 'M.Pharm',
+  specialization: 'Pharmaceutical Sciences',
+  img: "/assets/images/faculty_bhakti_pradhan_mali.png",
+  alt: 'Bhakti Pradhan Mali, M.Pharm faculty member at SIPS'
 }];
 
 
