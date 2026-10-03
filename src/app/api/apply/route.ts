@@ -26,6 +26,9 @@ export async function POST(req: NextRequest) {
         user: smtpUser,
         pass: smtpPass,
       },
+      tls: {
+        rejectUnauthorized: false,
+      },
     });
 
     const htmlContent = `
@@ -70,7 +73,7 @@ export async function POST(req: NextRequest) {
     `;
 
     await transporter.sendMail({
-      from: `"SIPS Admissions Portal" <${smtpUser}>`,
+      from: '"SIPS Admissions Portal" <sips.siliguricampus@gmail.com>',
       to: 'sips.siliguricampus@gmail.com',
       replyTo: email ? `"${name}" <${email}>` : undefined,
       subject: `New Admission Inquiry from ${name} — SIPS`,
@@ -78,8 +81,28 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ success: true }, { status: 200 });
-  } catch (error) {
-    console.error('Apply route error:', error);
-    return NextResponse.json({ error: 'Failed to send email. Please try again or contact us directly.' }, { status: 500 });
+  } catch (error: unknown) {
+    const err = error as { code?: string; responseCode?: number; response?: string; message?: string };
+    console.error('Apply route SMTP error:', {
+      code: err?.code,
+      responseCode: err?.responseCode,
+      response: err?.response,
+      message: err?.message,
+    });
+
+    if (err?.responseCode === 535) {
+      return NextResponse.json(
+        {
+          error:
+            'Email authentication failed. Please verify BREVO_SMTP_USER and BREVO_SMTP_PASS in environment variables. The SMTP password must be an SMTP Key from Brevo Settings → SMTP & API, not your account password.',
+        },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json(
+      { error: 'Failed to send email. Please try again or contact us directly.' },
+      { status: 500 }
+    );
   }
 }
