@@ -48,6 +48,31 @@ const galleryImages: GalleryImage[] = [
     category: 'Events',
   },
   {
+    src: '/assets/images/WhatsApp_Image_2026-10-03_at_9.33.59_PM-1791043506915.jpeg',
+    alt: 'SIPS college event gathering and activities',
+    category: 'Events',
+  },
+  {
+    src: '/assets/images/WhatsApp_Image_2026-10-03_at_9.33.59_PM__1_-1791043507016.jpeg',
+    alt: 'SIPS students and faculty at college event',
+    category: 'Events',
+  },
+  {
+    src: '/assets/images/WhatsApp_Image_2026-10-03_at_9.33.59_PM__2_-1791043506996.jpeg',
+    alt: 'SIPS college event celebration and program',
+    category: 'Events',
+  },
+  {
+    src: '/assets/images/WhatsApp_Image_2026-10-03_at_9.34.00_PM-1791043536264.jpeg',
+    alt: 'SIPS event highlights and student activities',
+    category: 'Events',
+  },
+  {
+    src: '/assets/images/WhatsApp_Image_2026-10-03_at_9.34.00_PM__1_-1791043507014.jpeg',
+    alt: 'SIPS college event moments and memories',
+    category: 'Events',
+  },
+  {
     src: '/assets/images/Semiar_Hall-1788255202540.png',
     alt: 'SIPS seminar hall interior with seating arrangement',
     category: 'Infrastructure',
