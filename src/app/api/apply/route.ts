@@ -92,53 +92,25 @@ export async function POST(req: NextRequest) {
 
       console.error('Brevo API error:', JSON.stringify(errorData));
 
-      // IP Authorization block — most common issue in cloud deployments
-      if (
-        errorData?.code === 'unauthorized' && errorData?.message?.toLowerCase().includes('unrecognised ip address')
-      ) {
-        const ipMatch = errorData.message?.match(/IP address ([\d.]+)/);
-        const blockedIp = ipMatch ? ipMatch[1] : 'unknown';
-        console.error(`[BREVO] IP Authorization is blocking server IP: ${blockedIp}`);
-        console.error(
-          '[BREVO] ACTION REQUIRED: Go to https://app.brevo.com/security/authorised_ips → ' +
-          'Click the toggle to DISABLE "IP Authorization" entirely. '+ 'Removing individual IPs is not enough — the feature must be turned OFF.'
-        );
-        return NextResponse.json(
-          {
-            error:
-              'BREVO_IP_BLOCKED',
-            blockedIp,
-          },
-          { status: 503 }
-        );
-      }
-
-      // Invalid API key
       if (response.status === 401 || errorData?.code === 'unauthorized') {
-        console.error('[BREVO] API key is invalid or expired');
         return NextResponse.json(
-          { error: 'Email service authentication failed. Please check the BREVO_API_KEY.' },
+          { error: 'Email service authentication failed. Please contact the administrator.' },
           { status: 500 }
         );
       }
 
-      // Sender not verified
       if (
         errorData?.message?.toLowerCase().includes('sender') ||
         errorData?.code === 'sender_not_found'
       ) {
-        console.error('[BREVO] Sender email not verified:', errorData.message);
         return NextResponse.json(
-          {
-            error:
-              'Sender email not verified in Brevo. Please verify sips.siliguricampus@gmail.com at https://app.brevo.com/senders',
-          },
+          { error: 'Email sender not verified. Please contact the administrator.' },
           { status: 500 }
         );
       }
 
       return NextResponse.json(
-        { error: `Failed to send email: ${errorData?.message || 'Unknown error'}` },
+        { error: `Failed to send email. Please try again or contact us directly.` },
         { status: 500 }
       );
     }
