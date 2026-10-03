@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import nodemailer from 'nodemailer';
 
 export async function POST(req: NextRequest) {
   try {
@@ -9,11 +10,23 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const apiKey = process.env.BREVO_API_KEY;
-    if (!apiKey || apiKey.trim() === '') {
-      console.error('BREVO_API_KEY is not set');
+    const smtpUser = process.env.BREVO_SMTP_USER;
+    const smtpPass = process.env.BREVO_SMTP_PASS;
+
+    if (!smtpUser || !smtpPass) {
+      console.error('BREVO_SMTP_USER or BREVO_SMTP_PASS is not set');
       return NextResponse.json({ error: 'Email service not configured' }, { status: 500 });
     }
+
+    const transporter = nodemailer.createTransport({
+      host: 'smtp-relay.brevo.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: smtpUser,
+        pass: smtpPass,
+      },
+    });
 
     const htmlContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #f9f9f9;">
@@ -56,68 +69,17 @@ export async function POST(req: NextRequest) {
       </div>
     `;
 
-    const payload = {
-      sender: {
-        name: 'SIPS Admissions Portal',
-        email: 'sips.siliguricampus@gmail.com',
-      },
-      to: [
-        {
-          email: 'sips.siliguricampus@gmail.com',
-          name: 'SIPS Admissions Team',
-        },
-      ],
-      replyTo: email ? { email, name } : undefined,
+    await transporter.sendMail({
+      from: `"SIPS Admissions Portal" <${smtpUser}>`,
+      to: 'sips.siliguricampus@gmail.com',
+      replyTo: email ? `"${name}" <${email}>` : undefined,
       subject: `New Admission Inquiry from ${name} — SIPS`,
-      htmlContent,
-    };
-
-    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
-      method: 'POST',
-      headers: {
-        accept: 'application/json',
-        'api-key': apiKey.trim(),
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify(payload),
+      html: htmlContent,
     });
-
-    if (!response.ok) {
-      let errorData: { code?: string; message?: string } = {};
-      try {
-        errorData = await response.json();
-      } catch {
-        errorData = { message: `HTTP ${response.status}` };
-      }
-
-      console.error('Brevo API error:', JSON.stringify(errorData));
-
-      if (response.status === 401 || errorData?.code === 'unauthorized') {
-        return NextResponse.json(
-          { error: 'Email service authentication failed. Please contact the administrator.' },
-          { status: 500 }
-        );
-      }
-
-      if (
-        errorData?.message?.toLowerCase().includes('sender') ||
-        errorData?.code === 'sender_not_found'
-      ) {
-        return NextResponse.json(
-          { error: 'Email sender not verified. Please contact the administrator.' },
-          { status: 500 }
-        );
-      }
-
-      return NextResponse.json(
-        { error: `Failed to send email. Please try again or contact us directly.` },
-        { status: 500 }
-      );
-    }
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
     console.error('Apply route error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to send email. Please try again or contact us directly.' }, { status: 500 });
   }
 }
