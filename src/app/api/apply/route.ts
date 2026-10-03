@@ -84,6 +84,15 @@ export async function POST(req: NextRequest) {
     if (!response.ok) {
       const errorData = await response.json();
       console.error('Brevo API error:', errorData);
+      
+      // Detect IP authorization error specifically
+      if (errorData?.code === 'unauthorized' && errorData?.message?.includes('unrecognised IP address')) {
+        return NextResponse.json(
+          { error: 'Email service configuration error. Please contact the administrator.' },
+          { status: 500 }
+        );
+      }
+      
       return NextResponse.json({ error: 'Failed to send notification email' }, { status: 500 });
     }
 
