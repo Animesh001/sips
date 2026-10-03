@@ -32,6 +32,13 @@ export default function InquiryForm() {
       });
       if (!res.ok) {
         const data = await res.json();
+        if (data.error === 'BREVO_IP_BLOCKED') {
+          throw new Error(
+            `Email delivery is temporarily blocked by a security setting in Brevo. ` +
+            `Please go to Brevo → Settings → Security → IP Authorization and DISABLE the feature completely (toggle it OFF). ` +
+            `Blocked IP: ${data.blockedIp || 'unknown'}`
+          );
+        }
         throw new Error(data.error || 'Submission failed. Please try again.');
       }
       setSubmitted(true);

@@ -10,7 +10,8 @@ export async function POST(req: NextRequest) {
     }
 
     const apiKey = process.env.BREVO_API_KEY;
-    if (!apiKey) {
+    if (!apiKey || apiKey.trim() === '') {
+      console.error('BREVO_API_KEY is not set');
       return NextResponse.json({ error: 'Email service not configured' }, { status: 500 });
     }
 
@@ -75,44 +76,62 @@ export async function POST(req: NextRequest) {
       method: 'POST',
       headers: {
         accept: 'application/json',
-        'api-key': apiKey,
+        'api-key': apiKey.trim(),
         'content-type': 'application/json',
       },
       body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
+      let errorData: { code?: string; message?: string } = {};
+      try {
+        errorData = await response.json();
+      } catch {
+        errorData = { message: `HTTP ${response.status}` };
+      }
+
       console.error('Brevo API error:', JSON.stringify(errorData));
 
+      // IP Authorization block — most common issue in cloud deployments
       if (
-        errorData?.code === 'unauthorized' && errorData?.message?.includes('unrecognised IP address')
+        errorData?.code === 'unauthorized' && errorData?.message?.toLowerCase().includes('unrecognised ip address')
       ) {
-        // Extract IP from error message for logging
-        const ipMatch = errorData.message.match(/IP address ([\d.]+)/);
+        const ipMatch = errorData.message?.match(/IP address ([\d.]+)/);
         const blockedIp = ipMatch ? ipMatch[1] : 'unknown';
-        console.error(`Brevo IP authorization required for: ${blockedIp}`);
+        console.error(`[BREVO] IP Authorization is blocking server IP: ${blockedIp}`);
+        console.error(
+          '[BREVO] ACTION REQUIRED: Go to https://app.brevo.com/security/authorised_ips → ' +
+          'Click the toggle to DISABLE "IP Authorization" entirely. '+ 'Removing individual IPs is not enough — the feature must be turned OFF.'
+        );
         return NextResponse.json(
           {
             error:
-              'IP authorization required. Please go to https://app.brevo.com/security/authorised_ips and remove all IP restrictions, then resubmit.',
+              'BREVO_IP_BLOCKED',
+            blockedIp,
           },
-          { status: 500 }
+          { status: 503 }
         );
       }
 
-      if (errorData?.code === 'unauthorized') {
+      // Invalid API key
+      if (response.status === 401 || errorData?.code === 'unauthorized') {
+        console.error('[BREVO] API key is invalid or expired');
         return NextResponse.json(
-          { error: 'Brevo API key is invalid or expired. Please check your BREVO_API_KEY.' },
+          { error: 'Email service authentication failed. Please check the BREVO_API_KEY.' },
           { status: 500 }
         );
       }
 
-      if (errorData?.message?.toLowerCase().includes('sender')) {
+      // Sender not verified
+      if (
+        errorData?.message?.toLowerCase().includes('sender') ||
+        errorData?.code === 'sender_not_found'
+      ) {
+        console.error('[BREVO] Sender email not verified:', errorData.message);
         return NextResponse.json(
           {
             error:
-              'Sender email not verified in Brevo. Please verify sips.siliguricampus@gmail.com as a sender at https://app.brevo.com/senders',
+              'Sender email not verified in Brevo. Please verify sips.siliguricampus@gmail.com at https://app.brevo.com/senders',
           },
           { status: 500 }
         );
