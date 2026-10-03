@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
     const payload = {
       sender: {
         name: 'SIPS Admissions Portal',
-        email: 'noreply@sipssiliguri.in',
+        email: 'sips.siliguricampus@gmail.com',
       },
       to: [
         {
@@ -83,17 +83,45 @@ export async function POST(req: NextRequest) {
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('Brevo API error:', errorData);
-      
-      // Detect IP authorization error specifically
-      if (errorData?.code === 'unauthorized' && errorData?.message?.includes('unrecognised IP address')) {
+      console.error('Brevo API error:', JSON.stringify(errorData));
+
+      if (
+        errorData?.code === 'unauthorized' && errorData?.message?.includes('unrecognised IP address')
+      ) {
+        // Extract IP from error message for logging
+        const ipMatch = errorData.message.match(/IP address ([\d.]+)/);
+        const blockedIp = ipMatch ? ipMatch[1] : 'unknown';
+        console.error(`Brevo IP authorization required for: ${blockedIp}`);
         return NextResponse.json(
-          { error: 'Email service configuration error. Please contact the administrator.' },
+          {
+            error:
+              'IP authorization required. Please go to https://app.brevo.com/security/authorised_ips and remove all IP restrictions, then resubmit.',
+          },
           { status: 500 }
         );
       }
-      
-      return NextResponse.json({ error: 'Failed to send notification email' }, { status: 500 });
+
+      if (errorData?.code === 'unauthorized') {
+        return NextResponse.json(
+          { error: 'Brevo API key is invalid or expired. Please check your BREVO_API_KEY.' },
+          { status: 500 }
+        );
+      }
+
+      if (errorData?.message?.toLowerCase().includes('sender')) {
+        return NextResponse.json(
+          {
+            error:
+              'Sender email not verified in Brevo. Please verify sips.siliguricampus@gmail.com as a sender at https://app.brevo.com/senders',
+          },
+          { status: 500 }
+        );
+      }
+
+      return NextResponse.json(
+        { error: `Failed to send email: ${errorData?.message || 'Unknown error'}` },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json({ success: true }, { status: 200 });
