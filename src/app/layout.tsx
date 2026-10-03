@@ -36,7 +36,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${bricolage.variable}`}>
+    <html lang="en" className={`${dmSans.variable} ${bricolage.variable}`} data-scroll-behavior="smooth">
       <body className={dmSans.className} suppressHydrationWarning>
         {children}
 

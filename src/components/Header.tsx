@@ -10,7 +10,7 @@ const navLinks = [
   { label: 'Programmes', href: '/about#programmes' },
   { label: 'Admission', href: '/admission' },
   { label: 'Infrastructure', href: '/about#infrastructure' },
-  { label: 'Success Stories', href: '/success-stories' },
+  { label: 'Gallery', href: '/gallery' },
   { label: 'Blog', href: '/blog' },
   { label: 'Faculty', href: '/about#faculty' },
   { label: 'Additional Info', href: '/about#additional' },

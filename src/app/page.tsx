@@ -6,6 +6,7 @@ import StatsSection from '@/app/components/StatsSection';
 import AboutSnippet from '@/app/components/AboutSnippet';
 import ProgrammeHighlight from '@/app/components/ProgrammeHighlight';
 import AdmissionCTA from '@/app/components/AdmissionCTA';
+import HomeFacultySection from '@/app/components/HomeFacultySection';
 
 export default function HomePage() {
   return (
@@ -16,6 +17,7 @@ export default function HomePage() {
         <StatsSection />
         <AboutSnippet />
         <ProgrammeHighlight />
+        <HomeFacultySection />
         <AdmissionCTA />
       </main>
       <Footer />
