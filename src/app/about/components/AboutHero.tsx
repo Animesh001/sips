@@ -15,9 +15,9 @@ export default function AboutHero() {
             
           </div>
           <span className="section-label">About Us</span>
-          <h1 className="font-display text-hero-xl font-extrabold text-foreground">
+          <h1 className="font-display text-hero-xl font-extrabold text-white">
             Siliguri Institute of{' '}
-            <span className="gradient-text">Pharmaceutical Sciences</span>
+            <span className="text-white">Pharmaceutical Sciences</span>
           </h1>
           <p className="text-base sm:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             A WBSCT-affiliated pharmacy institution in the heart of North Bengal, dedicated
