@@ -19,7 +19,7 @@ const faculty = [
   {
     name: 'Debdatta Sarkar',
     qualification: 'M.Pharm',
-    img: '/assets/images/Debdatta_Sarkar-1791042859571.jpeg',
+    img: '/assets/images/Debdutta_Sarkar-1791187023339.jpeg',
     alt: 'Debdatta Sarkar, M.Pharm faculty member at SIPS Siliguri'
   },
   {

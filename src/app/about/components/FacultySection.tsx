@@ -74,7 +74,7 @@ const faculty = [
   title: 'Faculty',
   qualification: 'M.Pharm',
   specialization: 'Pharmaceutical Sciences',
-  img: "/assets/images/Debdatta_Sarkar-1791040999308.jpeg",
+  img: "/assets/images/Debdutta_Sarkar-1791187023339.jpeg",
   alt: 'Debdatta Sarkar, M.Pharm faculty member at SIPS'
 },
 {
